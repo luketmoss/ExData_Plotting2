@@ -42,25 +42,30 @@ if(!exists("SCC")){
 ##from motor vehicle sources in Los Angeles County, California (fips == "06037"). 
 ##Which city has seen greater changes over time in motor vehicle emissions?
 print("Subsetting...")
+#subset motor vehicles
+vehicles <- grepl("vehicle", SCC$SCC.Level.Two, ignore.case=TRUE)
+vehiclesSCC <- SCC[vehicles,]$SCC
+vehiclesNEI <- NEI[NEI$SCC %in% vehiclesSCC,]
+
 #Subset emissions from Baltimore
-vehiclesBaltimoreNEI <- vehiclesNEI[vehiclesNEI$fips == 24510,]
-vehiclesBaltimoreNEI$city <- "Baltimore City"
+bal_nei <- vehiclesNEI[vehiclesNEI$fips == 24510,]
+bal_nei$city <- "Baltimore City"
 
 #Subset emissions from LA
-vehiclesLANEI <- vehiclesNEI[vehiclesNEI$fips=="06037",]
-vehiclesLANEI$city <- "Los Angeles County"
+la_nei <- vehiclesNEI[vehiclesNEI$fips=="06037",]
+la_nei$city <- "Los Angeles County"
 
 #Bind Baltimore and LA
-bothNEI <- rbind(vehiclesBaltimoreNEI,vehiclesLANEI)
+bal_la_nei <- rbind(bal_nei,la_nei)
 
 
 #plot
 print("Plotting...")
 png(filename="plot6.png", width = 480, height = 480)
-ggp <- ggplot(bothNEI, aes(x=factor(year), y=Emissions, fill=city)) +
+ggp <- ggplot(bal_la_nei, aes(x=factor(year), y=Emissions, fill=city)) +
     geom_bar(aes(fill=year),stat="identity") +
     facet_grid(scales="free", space="free", .~city) +
-    guides(fill=FALSE) + theme_bw() +
+    guides(fill=FALSE) + 
     labs(x="year", y="Total PM2.5 Emission (Tons") + 
     labs(title="PM2.5 Baltimore & LA Motor Vehicle Emissions")
 print(ggp)

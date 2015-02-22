@@ -47,15 +47,15 @@ vehiclesSCC <- SCC[vehicles,]$SCC
 vehiclesNEI <- NEI[NEI$SCC %in% vehiclesSCC,]
 
 #subset baltimore motor vehicles
-baltimoreVehiclesNEI <- vehiclesNEI[vehiclesNEI$fips==24510,]
+bal_nei <- vehiclesNEI[vehiclesNEI$fips==24510,]
 
 #plot
 print("Plotting...")
 png(filename="plot5.png", width = 480, height = 480)
-ggp <- ggplot(baltimoreVehiclesNEI,aes(factor(year),Emissions)) +
+ggp <- ggplot(bal_nei,aes(factor(year),Emissions)) +
     geom_bar(stat="identity",fill="grey",width=0.75) +
     theme_bw() +  guides(fill=FALSE) +
-    labs(x="year", y="Total PM2.5 Emission (in Tons)") + 
+    labs(x="year", y="Total PM2.5 Emission (Tons)") + 
     labs(title="PM2.5 Baltimore Motor Vehicle Emissions")
 print(ggp)
 dev.off()

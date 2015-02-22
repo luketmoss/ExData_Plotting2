@@ -53,7 +53,7 @@ png(filename="plot4.png", width = 480, height = 480)
 ggp <- ggplot(combustionNEI,aes(factor(year),Emissions)) +
     geom_bar(stat="identity",fill="grey",width=0.75) +
     theme_bw() +  guides(fill=FALSE) +
-    labs(x="year", y="Total PM2.5 Emissions (in Tons)") + 
+    labs(x="year", y="Total PM2.5 Emissions (Tons)") + 
     labs(title="PM2.5 Coal Combustion Source Emissions")
 print(ggp)
 dev.off()
